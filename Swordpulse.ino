@@ -23,7 +23,7 @@ void loop() {
 }
 
 
-static void  timerfunc(){
+static void  timerfunc(){  //The main function.  Uses a variable to keep time and haave multiple LED effects going all at once
 int  freq1=50;  //LED Effect 1 frequency
 int  freq2=35;  //LED Effect 2 frequency
 int  freq3=10;  //LED Effect 3 frequency
@@ -48,25 +48,22 @@ int  freq3=10;  //LED Effect 3 frequency
 }
 
 static void foo(int n, int freq1){
-    int i = n/freq1%(NUMPIXELS);
-    Serial.print(i);
-
+    int i = n/freq1%(NUMPIXELS);  //Uses the time variable n to activate LEDs in sequence, creating a 'wave' effect. 
       
-    
    
     
      
     int h = shiftr;
     int s = 180;
     int v = 45;
-    colorArray[i][0]=h;
+    colorArray[i][0]=h;   //Saves the LED state
     colorArray[i][1]=s;
     colorArray[i][2]=v;
   strip.setPixelColor(i,strip.ColorHSV(h , s,v));
   strip.show();
     
 if(i==29){      
-shiftr=50000-shiftr;         
+shiftr=50000-shiftr;    //Toggles the hue between 40000 and 10000     
 }
       
      
@@ -75,33 +72,35 @@ shiftr=50000-shiftr;
     
   
 }
-static void bar(){  
-    int i = rand() % 30 ;    
+static void bar(){  //This funciton just makes a random LED a random Hue, Saturation, and Value every so often
+    int i = rand() % NUMPIXELS ;    
     int h = rand() % 65535;
-    int s = rand() % 100 + 156;
-    int v = rand() % 50 +25;
-    colorArray[i][0]=h;
+    int s = rand() % 100 + 156;  //Picks a random variable between 155 and 255, didn't want anything too desaturated, it just looks white.
+    int v = rand() % 50 +25;  //Picks a random brightness between 25 and 75, didn't want anyhting that looked either off or blinding.
+    colorArray[i][0]=h;  //Saves the LED state
     colorArray[i][1]=s;
     colorArray[i][2]=v;
-  strip.setPixelColor(i,strip.ColorHSV(h , s,v));
+  strip.setPixelColor(i,strip.ColorHSV(h,s,v));
   strip.show();
     
    
   
 }
-static void whizz(){
+static void whizz(){  //This slowly dims every LED
  for(uint16_t i=0; i<strip.numPixels(); i++) {                                  
-            int h=colorArray[i][0];
+            int h=colorArray[i][0];  //Grabs the current LED state
             int s=colorArray[i][1];
             int v=colorArray[i][2];
-            v=v-1;
+            v=v-1;  //Makes the Value, the brightness variable, lower
             if(v<0){
               v=0;
             };
-            colorArray[i][2]=v;  
+            colorArray[i][2]=v;  //Stores the new variable
             strip.setPixelColor(i,strip.ColorHSV(h,s,v));
             strip.show();
-}
+           }
 
   
 }
+
+
